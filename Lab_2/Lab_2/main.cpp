@@ -62,6 +62,7 @@ int main()
  }
 
 //Opent the file and Deal with the text in the file;
+//File address specification function and file reading function.
 void ReadFile( string & file_name)
 {
     int s = file_name.length();
@@ -224,7 +225,8 @@ while( fin>>file_word )
              
          if( ( isalpha(file_word[i]) && !isalpha(file_word[i+1]) ) || ( i+1 == size_file_word-1 && isalpha(file_word[i+1]) ))
          {
-             
+             //Keyword extraction.
+             //Cover the string into letters only.
              if( ( isalpha(file_word[i]) && !isalpha(file_word[i+1]) ) )
                  temp_string = file_word.substr(index,i+1-index);
                  
