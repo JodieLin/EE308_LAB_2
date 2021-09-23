@@ -48,23 +48,21 @@ int main()
     string file_name ;
     cout<< "Please enter the location of the file: ";
     cin >> file_name;
-    cout << "Please enter the level you want to achieve: ";
+    cout << "Please enter the level you want to achieve: ";     //Users enter the location of the file and the result level they want to achieve;
     cin >> level;
-    
     ReadFile( file_name );
     string file_word = " ";
     fstream fin;
     fin.open(file_name.c_str(), ios::in );
     CountGroup f;
     queue<string> keyword_queue;
-
-    Match( f, file_word, keyword_queue ,fin );
+    Match(f, file_word, keyword_queue ,fin);
     KeywordMatch(f,keyword_queue);
     TotalOutput(f,level);
     fin.close();
-
  }
 
+//Opent the file and Deal with the text in the file;
 void ReadFile( string & file_name)
 {
     int s = file_name.length();
@@ -73,7 +71,7 @@ void ReadFile( string & file_name)
     {
         temp.push(file_name[s]);
     }
-    file_name ="";
+    file_name = "";
     while(!temp.empty())
     {
         file_name+=temp.top();
@@ -82,8 +80,8 @@ void ReadFile( string & file_name)
         temp.pop();
     }
 }
- 
- 
+
+// judge whether the keywords are in the file;
 void KeywordMatch(CountGroup &f,queue<string> & keyword_queue)
  {
      int i = 0,j = 0;
@@ -133,8 +131,9 @@ void KeywordMatch(CountGroup &f,queue<string> & keyword_queue)
             while((keyword_queue.front() == "case" || keyword_queue.front() == "break" || keyword_queue.front() == "default") && !keyword_queue.empty())
             {
                 if(keyword_queue.front() == "case")
+                {
                     f.count_case[f.case_number]++;
-
+                }
                 keyword_queue.pop();
             }
             f.case_number++;
@@ -146,6 +145,8 @@ void KeywordMatch(CountGroup &f,queue<string> & keyword_queue)
     }
 }
 
+
+//setup the output of this project.
 void TotalOutput(CountGroup &f,int level)
 {
     void cout2(CountGroup &f);
@@ -154,7 +155,9 @@ void TotalOutput(CountGroup &f,int level)
 
      cout<<"total num: "<<f.count<<endl;
      if(level == 2)
+     {
          cout2(f);
+     }
      else if(level == 3)
      {
          cout2(f);
@@ -170,35 +173,35 @@ void TotalOutput(CountGroup &f,int level)
  
      void cout2(CountGroup &f)
     {
-        int i = f.case_number;
+         int i = f.case_number;
          int j = 0;
-         cout<<"switch num: "<<f.count_switch_case<<endl;
-         cout<<"case num: ";
+         cout << "switch num: " << f.count_switch_case << endl;
+         cout << "case num: ";
          while(i--)
          {
-             cout<<f.count_case[j]<<' ';
+             cout << f.count_case[j] << ' ';
              j++;
         }
-        cout<<endl;
+        cout << endl;
     }
     void cout3(CountGroup &f)
     {
-        cout<<"if-else num: "<<f.count_if_else<<endl;
+        cout << "if-else num: " << f.count_if_else << endl;
     }
     void cout4(CountGroup &f)
     {
-        cout<<"if-elseif-else num: "<<f.count_if_elseif_else<<endl;
+        cout << "if-elseif-else num: " << f.count_if_elseif_else << endl;
     }
     
-    
+
 void Match(CountGroup &f, string file_word, queue<string> &keyword_queue, fstream &fin )
  {
          
-while(fin>>file_word)
+while( fin>>file_word )
      {
      if(file_word[0] == '/' && file_word[1] == '/' )
         {
-            cout<<"//    "<<file_word<<endl;
+            cout << "//    " << file_word << endl;
             getline(fin,file_word);
             fin>>file_word;
         }
