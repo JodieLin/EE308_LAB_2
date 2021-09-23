@@ -26,15 +26,16 @@ struct CountGroup
 {
     int count = 0;
     int count_if_else = 0;
-    int count_case = 0;
+    int case_number = 0;
     int count_switch_case = 0;
     int count_if_elseif_else = 0;
+    int count_case[100] = {0};
 };
 
 int main()
 {
     void TotalOutput( CountGroup &f, int level);
-    void MatchKeyword( CountGroup &f, string words_file, queue<string> &s, fstream &fin);
+    void Match( CountGroup &f, string words_file, queue<string> &s, fstream &fin);
     void KeywordMatch( CountGroup &f, queue<string> &s);
     void ReadFile(string & filename);
     
@@ -53,13 +54,14 @@ int main()
     fin.open(filename.c_str(), ios::in );
     CountGroup f;
     queue<string> Keyword_queue;
-    MatchKeyword(f, words_file, Keyword_queue, fin);
+    Match(f, words_file, Keyword_queue, fin);
     TotalOutput(f,  level);
     fin.close();
     //open the file, solve the problem of "\\"
     
 }
 
+//open the file and deal with the text of the file.
 void ReadFile(string & filename)
 {
     int s = filename.length();
@@ -80,17 +82,144 @@ void ReadFile(string & filename)
     }
 }
 
+//using queue ot judge whether the keywords appear in the file.
 void KeywordsMatch(CountGroup &f, queue<string> & keyword_queue)
 {
-    
+    int i = 0;
+    int j = 0;
+    stack <string> temp;
+    while(!keyword_queue.empty())
+    {
+        if(keyword_queue.front() == "if")
+        {
+            temp.push(keyword_queue.front());
+            keyword_queue.pop();
+        }
+        else if (keyword_queue.front() == "elseif")
+        {
+            temp.push(keyword_queue.front());
+            keyword_queue.pop();
+        }
+        else if (keyword_queue.front() == "else")
+        {
+            if(temp.top() == "if")
+            {
+                i++;
+                f.count_if_else++;
+                temp.pop();
+            }
+            else
+            {
+                while(temp.top() == "elseif" && !temp.empty())
+                {
+                    temp.pop();
+                }
+                if(!temp.empty())
+                {
+                    j++;
+                    f.count_if_elseif_else++;
+                    temp.pop();
+                }
+            }
+            keyword_queue.pop();
+        }
+        else if(keyword_queue.front() == "switch")
+        {
+            keyword_queue.pop();
+            while((keyword_queue.front() == "case" || keyword_queue.front() == "break" ||keyword_queue.front() == "default") && !keyword_queue.empty())
+            {
+                if(keyword_queue.front() == "case")
+                {
+                    f.count_case[f.case_number]++;
+                    keyword_queue.pop();
+                }
+                f.case_number++;
+            }
+        }
+        else
+        {
+            keyword_queue.pop();
+        }
+    }
 }
 
+//setup the Output of the project to achieve the requirement;
 void TotalOutput(CountGroup &f, int level)
 {
-    
+    void Output2(CountGroup &f);
+    void Output3(CountGroup &f);
+    void Output4(CountGroup &f);
+
+    //output the total number of keywords of the file.
+    cout << "total num: " << f.count << endl;
+    if (level == 2)
+        Output2(f);
+    else if (level == 3)
+    {
+        Output2(f);
+        Output3(f);
+    }
+    else
+    {
+        Output2(f);
+        Output3(f);
+        Output4(f);
+    }
 }
 
-void MatchKeyword(CountGroup &f, string words_file, queue<string> &keyword_queue, fstream &fin)
+void Output2(CountGroup &f)
 {
-    
+    int i = f.case_number;
+    int j = 0;
+    cout << "switch num: " << f.count_switch_case << endl;
+    cout << "case num: ";
+    while(i--)
+    {
+        cout << f.count_case[j] << ' ';
+        j++;
+    }
+    cout << endl;
+}
+void Output3(CountGroup &f)
+{
+    cout << "if-else num: " << f.count_if_else << endl;
+}
+void Output4(CountGroup &f)
+{
+    cout << "if-elseif-else num: " << f.count_if_elseif_else << endl;
+}
+
+
+void Match(CountGroup &f, string words_file, queue<string> &keyword_queue, fstream &fin)
+{
+    while(fin >> words_file)
+    {
+        if(words_file[0] == '/' && words_file[1] == '/')
+        {
+            cout << "//   " << words_file << endl;
+            getline(fin, words_file);
+            fin >> words_file;
+            //to match the next line and make the fin >> words_file become unavaliable.
+        }
+        else if(words_file[0] == '/' && words_file[1] == '*')
+        {
+            while(fin >> words_file)
+            {
+                if(words_file[words_file.size()-2] == '*' && words_file[words_file.size()-1] == '/')
+                    break;
+            }
+        }
+    }
+    int index = 0;
+    int size_words_file = words_file.size();
+    string temp_string;
+    for(int i = 0; i < size_words_file-1 ; i++)
+    {
+        if(!isalpha(words_file[i]) && isalpha(words_file[i+1]))
+            index = i+1;
+        if((isalpha(words_file[i]) && !isalpha(words_file[i+1])) || (i+1 == size_words_file-1 && isalpha(words_file[i+1]))
+           {
+            if()
+        }
+    }
 }
