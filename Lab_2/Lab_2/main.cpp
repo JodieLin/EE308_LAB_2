@@ -61,7 +61,7 @@ int main()
     fin.close();
  }
 
-//Opent the file and Deal with the text in the file;
+//Open the file and Deal with the text in the file;
 //File address specification function and file reading function.
 void ReadFile( string & file_name)
 {
@@ -229,7 +229,6 @@ while( fin>>file_word )
              //Cover the string into letters only.
              if( ( isalpha(file_word[i]) && !isalpha(file_word[i+1]) ) )
                  temp_string = file_word.substr(index,i+1-index);
-                 
              else
                  temp_string = file_word.substr(index,i+2-index);
                  
