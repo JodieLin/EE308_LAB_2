@@ -33,12 +33,51 @@ struct CountGroup
 
 int main()
 {
-    void
+    void TotalOutput( CountGroup &f, int level);
+    void MatchKeyword( CountGroup &f, string words_file, queue<string> &s, fstream &fin);
+    void KeywordMatch( CountGroup &f, queue<string> &s);
+    void ReadFile(string & filename);
+    
+    string filename;
+    int level;
+    cout << "Please enter the location of the file: ";
+    cin >> filename;
+    cout << "Please enter the level you want to achieve: ";
+    cin >> level;
+    //Users enter the location of the file ana the level of the result.
+    
+    
+    ReadFile( filename );
+    string words_file = " ";
+    fstream fin;
+    fin.open(filename.c_str(), ios::in );
+    CountGroup f;
+    queue<string> Keyword_queue;
+    MatchKeyword(f, words_file, Keyword_queue, fin);
+    TotalOutput(f,  level);
+    fin.close();
+    //open the file, solve the problem of "\\"
+    
 }
 
 void ReadFile(string & filename)
 {
-    
+    int s = filename.length();
+    stack <char> temp;
+    while(s--)
+    {
+        temp.push(filename[s]);
+    }
+    filename = " ";
+    while(!temp.empty())
+    {
+        filename += temp.top();
+        if (temp.top() == '\\')
+        {
+            filename += '\\';
+        }
+        temp.pop();
+    }
 }
 
 void KeywordsMatch(CountGroup &f, queue<string> & keyword_queue)
