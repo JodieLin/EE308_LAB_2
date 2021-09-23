@@ -15,7 +15,6 @@
 
 using namespace std;
 
-
 const string Keyword[32] =
 {
     "auto", "break", "case","char",
@@ -145,7 +144,6 @@ void KeywordMatch(CountGroup &f,queue<string> & keyword_queue)
     }
 }
 
-
 //setup the output of this project.
 void TotalOutput(CountGroup &f,int level)
 {
@@ -184,15 +182,16 @@ void TotalOutput(CountGroup &f,int level)
         }
         cout << endl;
     }
+
     void cout3(CountGroup &f)
     {
         cout << "if-else num: " << f.count_if_else << endl;
     }
+
     void cout4(CountGroup &f)
     {
         cout << "if-elseif-else num: " << f.count_if_elseif_else << endl;
     }
-    
 
 void Match(CountGroup &f, string file_word, queue<string> &keyword_queue, fstream &fin )
  {
