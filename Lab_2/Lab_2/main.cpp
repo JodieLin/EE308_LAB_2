@@ -217,9 +217,47 @@ void Match(CountGroup &f, string words_file, queue<string> &keyword_queue, fstre
     {
         if(!isalpha(words_file[i]) && isalpha(words_file[i+1]))
             index = i+1;
-        if((isalpha(words_file[i]) && !isalpha(words_file[i+1])) || (i+1 == size_words_file-1 && isalpha(words_file[i+1]))
-           {
-            if()
+        if((isalpha(words_file[i]) && !isalpha(words_file[i+1])) || (i+1 == size_words_file-1 && isalpha(words_file[i+1])))
+        {
+            if(isalpha(words_file[i]) && !isalpha(words_file[i+1]))
+                temp_string = words_file.substr(index, i+1-index);
+            else
+                temp_string = words_file.substr(index, i+2-index);
+            for( int j = 0; j < 32; j++ )
+            {
+                if(temp_string == Keywords[j])
+                {
+                    if(temp_string != "else")
+                    {
+                        keyword_queue.push(temp_string);
+                        f.count++;
+                        if(temp_string == "switch")
+                            f.count_switch_case++;
+                    }
+                    else
+                    {
+                        f.count++;
+                        //to provent from the condition "else{if}";
+                        if(words_file[4] == '{')
+                        {
+                            keyword_queue.push("else");
+                        }
+                        else
+                        {
+                            fin >> words_file;
+                            i++;
+                            if((words_file[0] == 'i' && words_file[1] == 'f' && words_file[2] == '(') || words_file == "if")
+                            {
+                                keyword_queue.push("elseif");
+                                f.count++;
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+            index = 0;
+            break;
+            }
         }
-    }
 }
